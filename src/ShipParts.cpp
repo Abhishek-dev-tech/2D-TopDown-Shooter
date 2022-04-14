@@ -10,6 +10,8 @@ ShipParts::ShipParts(const char* texturesheet, Vector _pos, int shipType)
 
 	angle = 0;
 
+	smallestDistance = 99999;
+
 	SetInfo();
 }
 
@@ -72,8 +74,9 @@ void ShipParts::AnimateShip()
 	SetScale(Vector(scale, scale));
 }
 
-void ShipParts::Renderer()
+void ShipParts::Renderer(std::vector<ShipParts> shipParts)
 {
+	DrawLine(shipParts);
 	RenderEx(angle);
 }
 
@@ -118,4 +121,31 @@ void ShipParts::MouseButtonPressed()
 bool ShipParts::GetIsShoot()
 {
 	return isShoot;
+}
+
+void ShipParts::DrawLine(std::vector<ShipParts> shipParts)
+{
+
+	for (int i = 0; i < shipParts.size(); i++)
+	{
+		DistancesBetweenShipsParts.resize(shipParts.size());
+
+		DistancesBetweenShipsParts[i] = Distance(GetPos(), shipParts[i].GetPos());
+
+		if (smallestDistance > DistancesBetweenShipsParts[i] && DistancesBetweenShipsParts[i] != 0)
+		{
+			smallestDistance = DistancesBetweenShipsParts[i];
+			smallestDistanceIndex = i;
+		}
+
+		std::cout << smallestDistance << " " << shipParts.size() << "\n";
+		
+	}
+
+	SDL_SetRenderDrawColor(GetRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderDrawLine(GetRenderer(), GetPos().GetX() + GetRect().w / 2,
+		GetPos().GetY() + GetRect().h / 2,
+		shipParts[smallestDistanceIndex].GetPos().GetX() + shipParts[smallestDistanceIndex].GetRect().w / 2,
+		shipParts[smallestDistanceIndex].GetPos().GetY() + shipParts[smallestDistanceIndex].GetRect().h / 2);
+
 }

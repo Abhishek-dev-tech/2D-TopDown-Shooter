@@ -5,7 +5,6 @@
 #include <vector>
 #include "Projectile.h"
 #include "ShipParts.h"
-#include "Vector.h"
 
 class ObjectSpawner
 {
@@ -33,8 +32,6 @@ public:
 	void SpawnShipParts(int shipType, SDL_Renderer* renderer);
 	std::vector<ShipParts> GetAllSpawnedShipParts();
 
-	void DrawLine();
-
 private:
 
 	std::vector<Enemy> enemies;
@@ -55,5 +52,4 @@ private:
 	int noOfEnemies;
 
 	Enemy m_tempEnemy;
-
 };

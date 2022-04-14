@@ -33,7 +33,7 @@ public:
 
 	void SubTo(Vector& other);
 
-	static float Distance(Vector v1, Vector v2);
+	float Distance(Vector v1, Vector v2);
 
 	float lerp(float a, float b, float t);
 

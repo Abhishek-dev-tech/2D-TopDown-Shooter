@@ -55,27 +55,6 @@ void ObjectSpawner::Update()
 	CheckEnemiesInScene();
 }
 
-void ObjectSpawner::DrawLine()
-{
-	for (int i = 0; i < shipParts.size(); i++)
-	{
-		for (int j = 0; j < shipParts.size(); j++)
-		{
-			if (Vector::Distance(shipParts[i].GetPos(), shipParts[shipParts.size() - 1].GetPos()) < Vector::Distance(shipParts[j].GetPos(), shipParts[shipParts.size() - 1].GetPos()))
-			{
-				SDL_SetRenderDrawColor(shipParts[i].GetRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
-				SDL_RenderDrawLine(shipParts[i].GetRenderer(), shipParts[i].GetPos().GetX() + shipParts[i].GetRect().w / 2,
-					shipParts[i].GetPos().GetY() + shipParts[i].GetRect().h / 2,
-					shipParts[shipParts.size() - 1].GetPos().GetX() + shipParts[shipParts.size() - 1].GetRect().w / 2,
-					shipParts[shipParts.size() - 1].GetPos().GetY() + shipParts[shipParts.size() - 1].GetRect().h / 2);
-				return;
-			}	
-		}
-		
-	}
-	
-}
-
 void ObjectSpawner::HandleEvents(SDL_Event event)
 {
 	switch (event.type)
@@ -238,7 +217,5 @@ void ObjectSpawner::Renderer()
 		projectiles[i].Renderer();
 
 	for (int k = 0; k < shipParts.size(); k++)
-		shipParts[k].Renderer();
-
-	DrawLine();
+		shipParts[k].Renderer(shipParts);
 }

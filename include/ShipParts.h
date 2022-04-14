@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Projectile.h"
 #include "Enemy.h"
+#include"vector"
 
 struct ShipInfo
 {
@@ -24,7 +25,7 @@ public:
 	ShipParts(const char* texturesheet, Vector _pos, int shipType);
 	void SetInfo();
 	void Update(Enemy enemy);
-	void Renderer();
+	void Renderer(std::vector<ShipParts> shipParts);
 	void Attack();
 	void Shoot(Projectile& projectile);
 	void AnimateShip();
@@ -34,6 +35,8 @@ public:
 	void MouseButtonPressed();
 
 	bool GetIsShoot();
+	void DrawLine(std::vector<ShipParts> shipParts);
+
 
 private:
 	struct ShipInfo shipInfo;
@@ -44,4 +47,9 @@ private:
 	bool isShoot;
 
 	float angle;
+
+	int smallestDistance, smallestDistanceIndex;
+
+	std::vector<int> DistancesBetweenShipsParts;
+
 };
