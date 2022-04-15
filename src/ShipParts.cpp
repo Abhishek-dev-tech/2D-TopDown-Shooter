@@ -138,8 +138,7 @@ void ShipParts::DrawLine(std::vector<ShipParts> shipParts)
 			smallestDistanceIndex = i;
 		}
 
-		std::cout << smallestDistance << " " << shipParts.size() << "\n";
-		
+		std::cout << smallestDistance << "\n";
 	}
 
 	SDL_SetRenderDrawColor(GetRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
@@ -147,5 +146,4 @@ void ShipParts::DrawLine(std::vector<ShipParts> shipParts)
 		GetPos().GetY() + GetRect().h / 2,
 		shipParts[smallestDistanceIndex].GetPos().GetX() + shipParts[smallestDistanceIndex].GetRect().w / 2,
 		shipParts[smallestDistanceIndex].GetPos().GetY() + shipParts[smallestDistanceIndex].GetRect().h / 2);
-
 }
