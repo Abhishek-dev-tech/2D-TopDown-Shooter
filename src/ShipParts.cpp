@@ -14,7 +14,7 @@ ShipParts::ShipParts(const char* texturesheet, Vector _pos, int shipType)
 
 	SetInfo();
 }
-
+ 
 void ShipParts::Update(Enemy enemy)
 {
 	if (!onAir)
@@ -33,7 +33,8 @@ void ShipParts::Update(Enemy enemy)
 	}
 	else
 	{
-		SetPos(Vector(GetMousePosX() - GetRect().w / 2, GetMousePosY() - GetRect().w / 2));
+		if(!stopShip)
+			SetPos(Vector(GetMousePosX() - GetRect().w / 2, GetMousePosY() - GetRect().w / 2));
 
 		SDL_SetTextureAlphaMod(GetTexture(), 180);
 	}
@@ -125,20 +126,33 @@ bool ShipParts::GetIsShoot()
 
 void ShipParts::DrawLine(std::vector<ShipParts> shipParts)
 {
-
-	for (int i = 0; i < shipParts.size(); i++)
+	if (onAir)
 	{
-		DistancesBetweenShipsParts.resize(shipParts.size());
-
-		DistancesBetweenShipsParts[i] = Distance(GetPos(), shipParts[i].GetPos());
-
-		if (smallestDistance > DistancesBetweenShipsParts[i] && DistancesBetweenShipsParts[i] != 0)
+		int i = 0;
+		for (i = 0; i < shipParts.size(); i++)
 		{
-			smallestDistance = DistancesBetweenShipsParts[i];
-			smallestDistanceIndex = i;
+			DistancesBetweenShipsParts.resize(shipParts.size());
+
+			DistancesBetweenShipsParts[i] = Distance(Vector(GetPos().GetX() + GetRect().w / 2, GetPos().GetY() + GetRect().h / 2), 
+				Vector(shipParts[i].GetPos().GetX() + shipParts[i].GetRect().w / 2, shipParts[i].GetPos().GetY() + shipParts[i].GetRect().h / 2));
+
+			if (smallestDistance > DistancesBetweenShipsParts[i] && DistancesBetweenShipsParts[i] != 0)
+			{
+				smallestDistance = DistancesBetweenShipsParts[i];
+				smallestDistanceIndex = i;
+			}
+			else if (smallestDistance < DistancesBetweenShipsParts[i])
+			{
+				smallestDistance = DistancesBetweenShipsParts[i];
+			}
 		}
 
-		std::cout << smallestDistance << "\n";
+		if (Distance(Vector(shipParts[smallestDistanceIndex].GetPos().GetX() + shipParts[smallestDistanceIndex].GetRect().w / 2, shipParts[smallestDistanceIndex].GetPos().GetY() + shipParts[smallestDistanceIndex].GetRect().h / 2),
+			Vector(GetMousePosX(), GetMousePosY())) >= 90)
+			stopShip = true;
+		
+		else
+			stopShip = false;
 	}
 
 	SDL_SetRenderDrawColor(GetRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);

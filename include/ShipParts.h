@@ -45,11 +45,11 @@ private:
 	bool mouseButtonPressed;
 	bool targetLocked;
 	bool isShoot;
+	bool stopShip;
 
 	float angle;
 
 	int smallestDistance, smallestDistanceIndex;
 
 	std::vector<int> DistancesBetweenShipsParts;
-
 };

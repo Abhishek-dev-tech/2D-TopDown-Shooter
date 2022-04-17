@@ -7,7 +7,7 @@ ObjectSpawner::ObjectSpawner()
 	once = true;
 
 	noOfProjectiles = 20;
-	noOfEnemies = 5;
+	noOfEnemies = 0;
 
 	m_tempEnemy.SetPos(Vector(400, 0));
 	m_tempEnemy.SetScale(Vector(0, 0));

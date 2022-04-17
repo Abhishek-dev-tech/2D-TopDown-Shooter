@@ -15,7 +15,7 @@ public:
 	float speed;
 	float maxVelocity;
 	type enemyType;
-	int hitPoints = 0;
+	int hitPoints;
 };
 
 class Enemy : public GameObject
