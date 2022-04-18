@@ -27,7 +27,7 @@ public:
 
 	Vector operator+(Vector& other);
 	
-	Vector operator-(Vector& other);
+	Vector operator-(const Vector& other);
 
 	void AddTo(Vector& other);
 

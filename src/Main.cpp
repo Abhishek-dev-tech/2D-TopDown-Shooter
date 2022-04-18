@@ -10,7 +10,7 @@ int main(int args, char* argc[])
 	int frameTime;
 
 
-	game.Init("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+	game.Init("Game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false, false);
 
 	while (game.Running())
 	{

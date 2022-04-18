@@ -14,7 +14,7 @@ public:
 	Game();
 	~Game();
 
-	void Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen);
+	void Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen, bool Windowed);
 
 	void HandleEvents();
 	void Update();
@@ -30,6 +30,4 @@ private:
 
 	Player player;
 	ObjectSpawner objectSpawner;
-
-	float maxTime, previousTime;
 };

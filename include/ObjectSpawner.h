@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include "Projectile.h"
-#include "ShipParts.h"
 
 class ObjectSpawner
 {
@@ -29,16 +28,11 @@ public:
 
 	Enemy GetEnemiesInScene();
 
-	void SpawnShipParts(int shipType, SDL_Renderer* renderer);
-	std::vector<ShipParts> GetAllSpawnedShipParts();
-
 private:
 
 	std::vector<Enemy> enemies;
 
 	std::vector<Projectile> projectiles;
-
-	std::vector<ShipParts> shipParts;
 
 	SDL_Renderer* renderer;
 
@@ -46,10 +40,7 @@ private:
 	bool mouseButtonPressed;
 
 	float enemyMaxTime, enemyPreviousTime;
-	float shipProjectileMaxTime, shipProjectilePreviousTime;
 
 	int noOfProjectiles;
 	int noOfEnemies;
-
-	Enemy m_tempEnemy;
 };

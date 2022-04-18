@@ -40,7 +40,9 @@ void Enemy::Update()
 			SetPos(Vector(0, 0));
 			once = false;
 		}
-		SetScale(Vector(.2, .2));
+		float scale = lerp(GetScale().GetX(), .2, 0.1);
+		SetScale(Vector(scale, scale));
+
 		Attack();
 
 		ready = false;
@@ -85,6 +87,8 @@ void Enemy::Damage()
 	hitPoints--;
 	if (hitPoints <= 0)
 		Reset();
+	Animate();
+	SetColor();
 }
 
 void Enemy::SetInfo()
@@ -113,6 +117,12 @@ void Enemy::SetInfo()
 	default:
 		break;
 	}
+}
+
+void Enemy::Animate()
+{
+	float scale = lerp(GetScale().GetX(), .35, 0.1);
+	SetScale(Vector(scale, scale));
 }
 
 void Enemy::Reset()

@@ -67,7 +67,7 @@ Vector Vector::operator+(Vector& other)
 	return Vector(x + other.x, y + other.y);
 }
 
-Vector Vector::operator-(Vector& other)
+Vector Vector::operator-(const Vector& other)
 {
 	return Vector(x - other.x, y - other.y);
 }

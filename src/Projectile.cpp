@@ -5,19 +5,18 @@
 Projectile::Projectile(const char* texturesheet, Vector _pos)
 	:GameObject(texturesheet, _pos)
 {
-	accleration.SetX(0.15);
-	accleration.SetY(0.15);
+	accleration.SetX(5);
+	accleration.SetY(5);
 	
 	SetReady(true);
 }
 
 void Projectile::Update()
 {
-	SetPos(GetPos() + velocity);
 
 	if (active)
 	{
-		velocity.AddTo(accleration);
+		SetPos(GetPos() - accleration);
 
 		if (GetPos().GetX() > 800 || GetPos().GetX() < 0 || GetPos().GetY() > 600 || GetPos().GetY() < 0)
 		{
@@ -51,7 +50,7 @@ void Projectile::Reset()
 
 void Projectile::Renderer()
 {
-	RenderEx(0);
+	RenderEx(accleration.GetAngle());
 	
 }
 

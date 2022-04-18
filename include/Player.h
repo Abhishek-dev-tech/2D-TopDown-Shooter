@@ -2,6 +2,7 @@
 #include "GameObject.h"
 #include "Enemy.h"
 #include "Projectile.h"
+#include "ObjectSpawner.h"
 
 #include <vector>
 
@@ -12,10 +13,10 @@ public:
 
 	Player() = default;
 
-	void Update(Enemy enemies);
+	void Update(ObjectSpawner& objectSpawner);
+	void HandleEvents(SDL_Event event);
 	void Renderer();
 	void ShootProjectiles(Projectile &projectile);
-	void AnimateShip();
 
 private:
 
@@ -23,7 +24,8 @@ private:
 	Vector accleration;
 
 	float angle;
-	
-	bool targetLocked;
+	float maxTime, previousTime;
+	float maxVelocity;
 
+	bool mouseButtonPressed;
 };

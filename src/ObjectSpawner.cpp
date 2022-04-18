@@ -7,15 +7,7 @@ ObjectSpawner::ObjectSpawner()
 	once = true;
 
 	noOfProjectiles = 20;
-	noOfEnemies = 0;
-
-	m_tempEnemy.SetPos(Vector(400, 0));
-	m_tempEnemy.SetScale(Vector(0, 0));
-	m_tempEnemy.SetActive(false);
-
-	shipProjectileMaxTime = .8;
-	shipProjectilePreviousTime = 0;
-
+	noOfEnemies = 5;
 }
 
 void ObjectSpawner::Update()
@@ -25,23 +17,6 @@ void ObjectSpawner::Update()
 
 	for (int j = 0; j < enemies.size(); j++)
 		enemies[j].Update();
-
-	for (int k = 0; k < shipParts.size(); k++)
-		shipParts[k].Update(GetEnemiesInScene());
-
-	if (SDL_GetTicks() * 0.001 - shipProjectilePreviousTime >= shipProjectileMaxTime)
-	{
-		for (int p = 0; p < shipParts.size(); p++)
-		{
-			shipProjectilePreviousTime = SDL_GetTicks() * 0.001;
-			if (!shipParts[p].GetOnAir() && shipParts[p].GetIsShoot())
-				shipParts[p].Shoot(GetProjectiles());
-		}
-		
-	}
-
-
-	m_tempEnemy.SetPos(Vector(GetEnemiesInScene().GetPos().GetX(), GetEnemiesInScene().GetPos().GetY()));
 
 	CheckCollision();
 
@@ -57,22 +32,7 @@ void ObjectSpawner::Update()
 
 void ObjectSpawner::HandleEvents(SDL_Event event)
 {
-	switch (event.type)
-	{
-	case SDL_MOUSEBUTTONDOWN:
-		if (event.button.button == SDL_BUTTON_LEFT)
-		{
-			for (int i = 0; i < shipParts.size(); i++)
-				shipParts[i].MouseButtonPressed();
-
-			mouseButtonPressed = true;
-		}
-			
-		break;
-
-	default:
-		break;
-	}
+	
 }
 
 void ObjectSpawner::CheckCollision()
@@ -84,7 +44,6 @@ void ObjectSpawner::CheckCollision()
 			if (Collision::IsCollide(enemies[i].GetRect(), projectiles[j].GetRect()))
 			{
 				projectiles[j].Reset();
-				enemies[i].SetColor();
 				enemies[i].Damage();
 			}
 		}
@@ -153,8 +112,6 @@ Enemy ObjectSpawner::GetEnemiesInScene()
 			return enemies[i];
 		}
 	}
-
-	return m_tempEnemy;
 }
 
 std::vector<Enemy> ObjectSpawner::GetAllSpawnedEnemies()
@@ -191,23 +148,6 @@ void ObjectSpawner::GenerateEnemies()
 	
 }
 
-void ObjectSpawner::SpawnShipParts(int shipType, SDL_Renderer* renderer)
-{
-	ShipParts tempShipPart("res/Ship.png", Vector(-100, -100), shipType);
-
-	tempShipPart.SetRenderer(renderer);
-
-	tempShipPart.SetScale(Vector(.35, .35));
-	tempShipPart.SetOnAir(true);
-
-	shipParts.push_back(tempShipPart);
-}
-
-std::vector<ShipParts> ObjectSpawner::GetAllSpawnedShipParts()
-{
-	return shipParts;
-}
-
 void ObjectSpawner::Renderer()
 {
 	for (int i = 0; i < enemies.size(); i++)
@@ -215,7 +155,4 @@ void ObjectSpawner::Renderer()
 
 	for (int i = 0; i < projectiles.size(); i++)
 		projectiles[i].Renderer();
-
-	for (int k = 0; k < shipParts.size(); k++)
-		shipParts[k].Renderer(shipParts);
 }

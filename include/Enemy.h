@@ -32,6 +32,7 @@ public:
 	void SetColor();
 	void Renderer();
 	void Damage();
+	void Animate();
 
 	bool IsActive();
 	bool IsReady();

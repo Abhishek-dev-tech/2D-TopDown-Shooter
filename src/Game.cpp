@@ -3,18 +3,20 @@
 
 
 Game::Game()
-	:player("res/Ship.png", Vector(400, 300))
+	:player("res/Player.png", Vector(400, 300))
 {}
 
 Game::~Game()
 {}
 
-void Game::Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen)
+void Game::Init(const char* title, int xpos, int ypos, int width, int height, bool fullscreen, bool Windowed)
 {
 	int flag = 0;	
 
 	if (fullscreen)
 		flag = SDL_WINDOW_FULLSCREEN;
+	else if(Windowed)
+		flag = SDL_WINDOW_MAXIMIZED;
 
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)	{
 
@@ -32,9 +34,6 @@ void Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 		isRunning = false;
 	}
 
-	previousTime = 0;
-	maxTime = 0.75;
-
 	objectSpawner.SpawnProjectile(renderer);
 	objectSpawner.SpawnEnemy(renderer);
 	
@@ -44,17 +43,9 @@ void Game::HandleEvents()
 {
 	SDL_Event event;
 	SDL_PollEvent(&event);
-	const Uint8* currentKeyStates = SDL_GetKeyboardState(NULL);
 
 	switch (event.type)
 	{
-	case SDL_KEYDOWN:
-		if (event.key.keysym.sym == SDLK_1)
-			objectSpawner.SpawnShipParts(1, renderer);
-		else if (event.key.keysym.sym == SDLK_2)
-			objectSpawner.SpawnShipParts(2, renderer);
-		break;
-
 	case SDL_QUIT:
 		isRunning = false;
 		break;
@@ -63,20 +54,13 @@ void Game::HandleEvents()
 	}
 
 	objectSpawner.HandleEvents(event);
+	player.HandleEvents(event);
 }
 
 void Game::Update()
 {
-	player.Update(objectSpawner.GetEnemiesInScene());
-
-
+	player.Update(objectSpawner);
 	objectSpawner.Update();
-
-	if (SDL_GetTicks() * 0.001 - previousTime >= maxTime)
-	{
-		previousTime = SDL_GetTicks() * 0.001;
-		player.ShootProjectiles(objectSpawner.GetProjectiles());
-	}
 }
 
 void Game::Renderer()
