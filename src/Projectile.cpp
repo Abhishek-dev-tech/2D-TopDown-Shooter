@@ -18,7 +18,7 @@ void Projectile::Update()
 	{
 		SetPos(GetPos() - accleration);
 
-		if (GetPos().GetX() > 800 || GetPos().GetX() < 0 || GetPos().GetY() > 600 || GetPos().GetY() < 0)
+		if (GetPos().GetX() > 1200 || GetPos().GetX() < 0 || GetPos().GetY() > 900 || GetPos().GetY() < 0)
 		{
 			active = false;
 		}
@@ -31,7 +31,7 @@ void Projectile::Update()
 		velocity.SetY(0);
 
 		
-		SetPos(Vector(400, 300));
+		SetPos(Vector(-100, -100));
 
 		SetScale(Vector(0, 0));
 	}

@@ -6,22 +6,24 @@
 Player::Player(const char* texturesheet, Vector _pos)
 	:GameObject(texturesheet, _pos)
 {
-	accleration.SetX(.01);
-	accleration.SetY(.01);
+	accleration.SetLength(0.025);
 
 	velocity.SetAngle(0);
 
 	previousTime = 0;
 	maxTime = 0.2;
 
-	maxVelocity = 1;
+	maxVelocity = 2.25;
 
-	SetScale(Vector(1, 1));
+	SetScale(Vector(.7, .7));
 }
 
 void Player::Update(ObjectSpawner& objectSpawner)
 {
 	SetPos(GetPos() + velocity);
+
+	if (velocity.GetLength() >= maxVelocity)
+		velocity.SetLength(maxVelocity);
 
 	float dy, dx;
 	dx = GetPos().GetX() + GetRect().w / 2 - GetMousePosX();
@@ -40,8 +42,8 @@ void Player::Update(ObjectSpawner& objectSpawner)
 
 void Player::ShootProjectiles(Projectile &projectile)
 {
-	projectile.SetPos(Vector(GetPos().GetX() + GetRect().w / 2 + cos(angle) * GetRect().h / 2
-		, GetPos().GetY() + GetRect().h / 2 + sin(angle) * GetRect().h / 2));
+	projectile.SetPos(Vector(GetPos().GetX() + GetRect().w / 2 - cos(angle) * GetRect().h / 2
+		, GetPos().GetY() + GetRect().h / 2 - sin(angle) * GetRect().h / 2));
 
 	projectile.SetActive(true);
 	projectile.SetReady(false);
@@ -66,8 +68,6 @@ void Player::HandleEvents(SDL_Event event)
 	else if (event.type == SDL_MOUSEBUTTONUP)
 		mouseButtonPressed = false;
 }
-
-
 
 void Player::Renderer()
 {

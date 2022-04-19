@@ -13,8 +13,7 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 
 	SetInfo();
 
-	accleration.SetX(info.speed);
-	accleration.SetY(info.speed);
+	accleration.SetLength(info.speed);
 
 	SDL_SetTextureColorMod(GetTexture(), 255, 255, 255);
 
@@ -22,13 +21,16 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 
 	once = true;
 	inScene = false;
+	pushBack = false;
+	collidingWithPlayer = false;
 }
 
-void Enemy::Update()
+void Enemy::Update(GameObject& gameObject)
 {
 	if (active)
 	{
-		SetPos(GetPos() + velocity);
+		if(!pushBack)
+			SetPos(GetPos() + velocity);
 
 		Uint8 r, g, b;
 		SDL_GetTextureColorMod(GetTexture(), &r, &g, &b);
@@ -43,7 +45,11 @@ void Enemy::Update()
 		float scale = lerp(GetScale().GetX(), .2, 0.1);
 		SetScale(Vector(scale, scale));
 
+		playerInfo = gameObject;
+
 		Attack();
+		CheckCollision();
+		PushBackward();
 
 		ready = false;
 
@@ -52,8 +58,7 @@ void Enemy::Update()
 	{
 		ready = true;
 
-		velocity.SetX(0);
-		velocity.SetY(0);
+		velocity.SetLength(0);
 
 
 		SetPos(Vector(-10, -10));
@@ -71,15 +76,39 @@ void Enemy::Attack()
 
 void Enemy::Follow()
 {
-	velocity.AddTo(accleration);
+	velocity.SetAngle(atan2(playerInfo.GetPos().GetY() - GetPos().GetY(), playerInfo.GetPos().GetX() - GetPos().GetX()));
 
-	accleration.SetAngle(atan2(300 - GetPos().GetY(), 400 - GetPos().GetX()));
-
-	if (velocity.GetX() >= info.maxVelocity && velocity.GetY() >= info.maxVelocity)
+	if (velocity.GetLength() <= info.maxVelocity && !pushBack)
 	{
-		velocity.SetX(info.maxVelocity);
-		velocity.SetY(info.maxVelocity);
+		velocity.AddTo(accleration);
 	}	
+
+
+}
+
+void Enemy::CheckCollision()
+{
+	if (Collision::IsCollide(GetRect(), playerInfo.GetRect()))
+	{
+		collidingWithPlayer = true;
+		pushBack = true;
+	}	
+	else
+		collidingWithPlayer = false;
+}
+
+void Enemy::PushBackward()
+{
+	if (collidingWithPlayer || pushBack)
+	{
+		SetPos(GetPos() - velocity);
+
+		if (Distance(playerInfo.GetPos(), GetPos()) > 100)
+		{
+			velocity.SetLength(GetLength() * 0.1);
+			pushBack = false;
+		}		
+	}
 }
 
 void Enemy::Damage()
@@ -100,7 +129,7 @@ void Enemy::SetInfo()
 
 		SetScale(Vector(.2, .2));
 
-		info.maxVelocity = 1;
+		info.maxVelocity = 1.5;
 		info.hitPoints = 15;
 
 		break;
@@ -110,7 +139,7 @@ void Enemy::SetInfo()
 
 		SetScale(Vector(.2, .2));
 
-		info.maxVelocity = 1;
+		info.maxVelocity = 2;
 		info.hitPoints = 15;
 		break;
 

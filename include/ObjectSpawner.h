@@ -12,7 +12,7 @@ public:
 	ObjectSpawner();
 	void SpawnEnemy(SDL_Renderer* renderer);
 	void SpawnProjectile(SDL_Renderer* renderer);
-	void Update();
+	void Update(GameObject& gameObject);
 	void HandleEvents(SDL_Event event);
 	void Renderer();
 

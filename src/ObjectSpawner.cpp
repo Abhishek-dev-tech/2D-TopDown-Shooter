@@ -10,13 +10,13 @@ ObjectSpawner::ObjectSpawner()
 	noOfEnemies = 5;
 }
 
-void ObjectSpawner::Update()
+void ObjectSpawner::Update(GameObject& gameObject)
 {
 	for (int i = 0; i < projectiles.size(); i++)
 		projectiles[i].Update();
 
 	for (int j = 0; j < enemies.size(); j++)
-		enemies[j].Update();
+		enemies[j].Update(gameObject);
 
 	CheckCollision();
 

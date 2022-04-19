@@ -60,7 +60,7 @@ void Game::HandleEvents()
 void Game::Update()
 {
 	player.Update(objectSpawner);
-	objectSpawner.Update();
+	objectSpawner.Update(player);
 }
 
 void Game::Renderer()

@@ -27,7 +27,7 @@ public:
 
 	void Attack();
 	void Follow();
-	void Update();
+	void Update(GameObject& gameObject);
 	void SetInfo();
 	void SetColor();
 	void Renderer();
@@ -43,6 +43,9 @@ public:
 	bool GetInScene();
 	void SetInScene(bool value);
 
+	void CheckCollision();
+	void PushBackward();
+
 	void Reset();
 
 private:
@@ -50,6 +53,8 @@ private:
 
 	Vector velocity;
 	Vector accleration;
+	
+	GameObject playerInfo;
 
 	int hitPoints;
 
@@ -57,6 +62,8 @@ private:
 	bool ready;
 	bool once;
 	bool inScene;
+	bool collidingWithPlayer;
+	bool pushBack;
 
 
 };
