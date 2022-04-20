@@ -27,12 +27,13 @@ public:
 
 	void Attack();
 	void Follow();
-	void Update(GameObject& gameObject);
+	void Update(GameObject& playerInfo, GameObject& enemyInfo);
 	void SetInfo();
 	void SetColor();
 	void Renderer();
 	void Damage();
 	void Animate();
+	void Shoot();
 
 	bool IsActive();
 	bool IsReady();
@@ -43,7 +44,7 @@ public:
 	bool GetInScene();
 	void SetInScene(bool value);
 
-	void CheckCollision();
+	void CheckCollision(SDL_Rect A, SDL_Rect B,bool &isCollide);
 	void PushBackward();
 
 	void Reset();
@@ -55,6 +56,7 @@ private:
 	Vector accleration;
 	
 	GameObject playerInfo;
+	GameObject enemyInfo;
 
 	int hitPoints;
 
@@ -62,8 +64,10 @@ private:
 	bool ready;
 	bool once;
 	bool inScene;
+
 	bool collidingWithPlayer;
 	bool pushBack;
+	bool collideWithEnemy;
 
 
 };

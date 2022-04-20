@@ -8,6 +8,8 @@ ObjectSpawner::ObjectSpawner()
 
 	noOfProjectiles = 20;
 	noOfEnemies = 5;
+
+	index = 0;
 }
 
 void ObjectSpawner::Update(GameObject& gameObject)
@@ -16,7 +18,14 @@ void ObjectSpawner::Update(GameObject& gameObject)
 		projectiles[i].Update();
 
 	for (int j = 0; j < enemies.size(); j++)
-		enemies[j].Update(gameObject);
+	{
+		index += 1;
+
+		if (index == enemies.size())
+			index = 0;
+
+		enemies[j].Update(gameObject, enemies[index]);
+	}
 
 	CheckCollision();
 
@@ -67,13 +76,27 @@ void ObjectSpawner::SpawnEnemy(SDL_Renderer* renderer)
 {
 	for (int i = 0; i < noOfEnemies; i++)
 	{
-		Enemy tempEnemy("res/Enemy.png", Vector(-10, -10), 1);
+		if (i % 2 == 0)
+		{
+			Enemy tempEnemy("res/Enemy.png", Vector(-10, -10), 1);
 
-		tempEnemy.SetRenderer(renderer);
+			tempEnemy.SetRenderer(renderer);
 
-		tempEnemy.SetScale(Vector(0, 0));
+			tempEnemy.SetScale(Vector(0, 0));
 
-		enemies.push_back(tempEnemy);
+			enemies.push_back(tempEnemy);
+		}
+		else
+		{
+			Enemy tempEnemy("res/Enemy_2.png", Vector(-10, -10), 2);
+
+			tempEnemy.SetRenderer(renderer);
+
+			tempEnemy.SetScale(Vector(0, 0));
+
+			enemies.push_back(tempEnemy);
+		}
+		
 	}	
 }
 

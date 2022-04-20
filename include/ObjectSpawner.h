@@ -43,4 +43,5 @@ private:
 
 	int noOfProjectiles;
 	int noOfEnemies;
+	int index;
 };

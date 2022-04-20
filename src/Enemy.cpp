@@ -15,41 +15,67 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 
 	accleration.SetLength(info.speed);
 
-	SDL_SetTextureColorMod(GetTexture(), 255, 255, 255);
-
 	hitPoints = info.hitPoints;
 
 	once = true;
 	inScene = false;
+	active = false;
 	pushBack = false;
 	collidingWithPlayer = false;
 }
 
-void Enemy::Update(GameObject& gameObject)
+void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 {
 	if (active)
 	{
-		if(!pushBack)
-			SetPos(GetPos() + velocity);
+		if (Distance(playerInfo.GetPos(), GetPos()) >= 125 && info.enemyType == info.shooting)
+		{
+			if (!pushBack)
+				SetPos(GetPos() + velocity);
+		}
+		else if(info.enemyType == info.follow)
+		{
+			if (!pushBack)
+				SetPos(GetPos() + velocity);
+		}
+
 
 		Uint8 r, g, b;
 		SDL_GetTextureColorMod(GetTexture(), &r, &g, &b);
 
-		SDL_SetTextureColorMod(GetTexture(), lerp(r, 255, 0.05), lerp(g, 58, 0.05), lerp(b, 58, 0.05));
+		if(info.enemyType == info.follow)
+			SDL_SetTextureColorMod(GetTexture(), lerp(r, 255, 0.05), lerp(g, 58, 0.05), lerp(b, 58, 0.05));
+		else
+			SDL_SetTextureColorMod(GetTexture(), lerp(r, 255, 0.05), lerp(g, 188, 0.05), lerp(b, 42, 0.05));
 
 		if (once)
 		{
 			SetPos(Vector(0, 0));
 			once = false;
 		}
-		float scale = lerp(GetScale().GetX(), .2, 0.1);
+
+		float scale;
+
+		if(info.enemyType == info.follow)
+			scale = lerp(GetScale().GetX(), .2, 0.1);
+		else
+			scale = lerp(GetScale().GetX(), 1, 0.1);
+
 		SetScale(Vector(scale, scale));
 
-		playerInfo = gameObject;
+		this->playerInfo = playerInfo;
+		this->enemyInfo = enemyInfo;
 
 		Attack();
-		CheckCollision();
+		CheckCollision(GetRect(), playerInfo.GetRect(), collidingWithPlayer);
+		CheckCollision(GetRect(), enemyInfo.GetRect(), collideWithEnemy);
 		PushBackward();
+
+		if (collideWithEnemy)
+			pushBack = true;
+
+		if (collideWithEnemy)
+			pushBack = true;
 
 		ready = false;
 
@@ -60,7 +86,6 @@ void Enemy::Update(GameObject& gameObject)
 
 		velocity.SetLength(0);
 
-
 		SetPos(Vector(-10, -10));
 
 		SetScale(Vector(0, 0));
@@ -69,9 +94,7 @@ void Enemy::Update(GameObject& gameObject)
 
 void Enemy::Attack()
 {
-	if (info.enemyType == info.follow)
-		Follow();
-	
+	Follow();	
 }
 
 void Enemy::Follow()
@@ -82,13 +105,11 @@ void Enemy::Follow()
 	{
 		velocity.AddTo(accleration);
 	}	
-
-
 }
 
-void Enemy::CheckCollision()
+void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B, bool& isCollide)
 {
-	if (Collision::IsCollide(GetRect(), playerInfo.GetRect()))
+	if (Collision::IsCollide(A, B))
 	{
 		collidingWithPlayer = true;
 		pushBack = true;
@@ -103,12 +124,18 @@ void Enemy::PushBackward()
 	{
 		SetPos(GetPos() - velocity);
 
-		if (Distance(playerInfo.GetPos(), GetPos()) > 100)
+		if (Distance(playerInfo.GetPos(), GetPos()) >= 100)
 		{
-			velocity.SetLength(GetLength() * 0.1);
+			velocity.SetLength(0);
 			pushBack = false;
-		}		
+
+		}
 	}
+}
+
+void Enemy::Shoot()
+{
+
 }
 
 void Enemy::Damage()
@@ -139,7 +166,7 @@ void Enemy::SetInfo()
 
 		SetScale(Vector(.2, .2));
 
-		info.maxVelocity = 2;
+		info.maxVelocity = 1.2;
 		info.hitPoints = 15;
 		break;
 
@@ -150,7 +177,12 @@ void Enemy::SetInfo()
 
 void Enemy::Animate()
 {
-	float scale = lerp(GetScale().GetX(), .35, 0.1);
+	float scale;
+	if (info.enemyType == info.follow)
+		scale = lerp(GetScale().GetX(), .35, 0.1);
+	else
+		scale = lerp(GetScale().GetX(), 1.2, 0.1);
+
 	SetScale(Vector(scale, scale));
 }
 
@@ -198,5 +230,5 @@ void Enemy::SetInScene(bool value)
 
 void Enemy::Renderer()
 {
-	RenderEx(0);
+	RenderEx(atan2(playerInfo.GetPos().GetY() + playerInfo.GetRect().h / 2 - GetPos().GetY() + GetRect().h / 2, playerInfo.GetPos().GetX() + playerInfo.GetRect().w / 2 - GetPos().GetX() + GetRect().w / 2) + 90 * 3.14 / 180);
 }
