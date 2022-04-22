@@ -19,7 +19,6 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 
 	once = true;
 	inScene = false;
-	active = false;
 	pushBack = false;
 	collidingWithPlayer = false;
 }
@@ -32,6 +31,12 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 		{
 			if (!pushBack)
 				SetPos(GetPos() + velocity);
+
+			if (SDL_GetTicks() * 0.001 - previousTime >= maxTime)
+			{
+				previousTime = SDL_GetTicks() * 0.001;
+				//Shoot(objectSpawner.GetProjectiles());
+			}
 		}
 		else if(info.enemyType == info.follow)
 		{
@@ -133,9 +138,17 @@ void Enemy::PushBackward()
 	}
 }
 
-void Enemy::Shoot()
+void Enemy::Shoot(Projectile& projectile)
 {
+	projectile.SetPos(Vector(GetPos().GetX() + GetRect().w / 2 - cos(velocity.GetAngle()) * GetRect().h / 2
+		, GetPos().GetY() + GetRect().h / 2 - sin(velocity.GetAngle()) * GetRect().h / 2));
 
+	projectile.SetActive(true);
+	projectile.SetReady(false);
+
+	projectile.SetProjectileAngle(velocity.GetAngle());
+
+	projectile.SetScale(Vector(.5, .5));
 }
 
 void Enemy::Damage()

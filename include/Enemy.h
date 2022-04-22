@@ -1,6 +1,7 @@
 #pragma once
 #include "GameObject.h"
 #include "Collision.h"
+#include "Projectile.h"
 
 
 struct Info
@@ -33,7 +34,7 @@ public:
 	void Renderer();
 	void Damage();
 	void Animate();
-	void Shoot();
+	void Shoot(Projectile& projectile);
 
 	bool IsActive();
 	bool IsReady();
@@ -64,10 +65,12 @@ private:
 	bool ready;
 	bool once;
 	bool inScene;
-
 	bool collidingWithPlayer;
 	bool pushBack;
 	bool collideWithEnemy;
+
+	float maxTime, previousTime;
+
 
 
 };
