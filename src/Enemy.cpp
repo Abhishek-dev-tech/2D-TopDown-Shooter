@@ -32,18 +32,17 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 			if (!pushBack)
 				SetPos(GetPos() + velocity);
 
-			if (SDL_GetTicks() * 0.001 - previousTime >= maxTime)
-			{
-				previousTime = SDL_GetTicks() * 0.001;
+			//if (SDL_GetTicks() * 0.001 - previousTime >= maxTime)
+			//{
+			//	previousTime = SDL_GetTicks() * 0.001;
 				//Shoot(objectSpawner.GetProjectiles());
-			}
+			//}
 		}
 		else if(info.enemyType == info.follow)
 		{
 			if (!pushBack)
 				SetPos(GetPos() + velocity);
 		}
-
 
 		Uint8 r, g, b;
 		SDL_GetTextureColorMod(GetTexture(), &r, &g, &b);
@@ -55,7 +54,10 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 
 		if (once)
 		{
-			SetPos(Vector(0, 0));
+			int randX = rand() % 1100;
+			int randY = rand() % 850;
+
+			SetPos(Vector(randX, randY));
 			once = false;
 		}
 
@@ -76,7 +78,7 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 		CheckCollision(GetRect(), enemyInfo.GetRect(), collideWithEnemy);
 		PushBackward();
 
-		if (collideWithEnemy)
+		if (collidingWithPlayer)
 			pushBack = true;
 
 		if (collideWithEnemy)
@@ -116,11 +118,11 @@ void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B, bool& isCollide)
 {
 	if (Collision::IsCollide(A, B))
 	{
-		collidingWithPlayer = true;
+		isCollide = true;
 		pushBack = true;
 	}	
 	else
-		collidingWithPlayer = false;
+		isCollide = false;
 }
 
 void Enemy::PushBackward()
@@ -133,7 +135,6 @@ void Enemy::PushBackward()
 		{
 			velocity.SetLength(0);
 			pushBack = false;
-
 		}
 	}
 }
@@ -194,7 +195,7 @@ void Enemy::Animate()
 	if (info.enemyType == info.follow)
 		scale = lerp(GetScale().GetX(), .35, 0.1);
 	else
-		scale = lerp(GetScale().GetX(), 1.2, 0.1);
+		scale = lerp(GetScale().GetX(), 1.4, 0.1);
 
 	SetScale(Vector(scale, scale));
 }
