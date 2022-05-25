@@ -7,9 +7,15 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 	SetReady(true);
 
 	if (enemyType == 1)
+	{
 		info.enemyType = info.follow;
-	else if(enemyType == 2)
+	}
+	else if (enemyType == 2)
+	{
 		info.enemyType = info.shooting;
+		previousTime = 0;
+		maxTime = 0.3f;
+	}
 
 	SetInfo();
 
@@ -19,29 +25,26 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 
 	once = true;
 	inScene = false;
-	pushBack = false;
-	collidingWithPlayer = false;
 }
 
-void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
+void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &projectile)
 {
 	if (active)
 	{
 		if (Distance(playerInfo.GetPos(), GetPos()) >= 125 && info.enemyType == info.shooting)
 		{
-			if (!pushBack)
-				SetPos(GetPos() + velocity);
-
-			//if (SDL_GetTicks() * 0.001 - previousTime >= maxTime)
-			//{
-			//	previousTime = SDL_GetTicks() * 0.001;
-				//Shoot(objectSpawner.GetProjectiles());
-			//}
+			SetPos(GetPos() + velocity);
 		}
 		else if(info.enemyType == info.follow)
 		{
-			if (!pushBack)
-				SetPos(GetPos() + velocity);
+			SetPos(GetPos() + velocity);
+		}
+
+		if (SDL_GetTicks() * 0.001 - previousTime >= maxTime && info.enemyType == info.shooting)
+		{
+			previousTime = SDL_GetTicks() * 0.001;
+			//Shoot(projectile);
+
 		}
 
 		Uint8 r, g, b;
@@ -74,16 +77,7 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 		this->enemyInfo = enemyInfo;
 
 		Attack();
-		CheckCollision(GetRect(), playerInfo.GetRect(), collidingWithPlayer);
-		CheckCollision(GetRect(), enemyInfo.GetRect(), collideWithEnemy);
-		PushBackward();
-
-		if (collidingWithPlayer)
-			pushBack = true;
-
-		if (collideWithEnemy)
-			pushBack = true;
-
+		CheckCollision(GetRect(), playerInfo.GetRect());
 		ready = false;
 
 	}
@@ -97,6 +91,7 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 
 		SetScale(Vector(0, 0));
 	}
+
 }
 
 void Enemy::Attack()
@@ -108,46 +103,27 @@ void Enemy::Follow()
 {
 	velocity.SetAngle(atan2(playerInfo.GetPos().GetY() - GetPos().GetY(), playerInfo.GetPos().GetX() - GetPos().GetX()));
 
-	if (velocity.GetLength() <= info.maxVelocity && !pushBack)
+	if (velocity.GetLength() <= info.maxVelocity)
 	{
 		velocity.AddTo(accleration);
 	}	
 }
 
-void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B, bool& isCollide)
+void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B)
 {
-	if (Collision::IsCollide(A, B))
-	{
-		isCollide = true;
-		pushBack = true;
-	}	
-	else
-		isCollide = false;
-}
-
-void Enemy::PushBackward()
-{
-	if (collidingWithPlayer || pushBack)
-	{
-		SetPos(GetPos() - velocity);
-
-		if (Distance(playerInfo.GetPos(), GetPos()) >= 100)
-		{
-			velocity.SetLength(0);
-			pushBack = false;
-		}
-	}
+	if(info.enemyType == info.follow && Collision::IsCollide(A, B))
+		Reset();
 }
 
 void Enemy::Shoot(Projectile& projectile)
 {
 	projectile.SetPos(Vector(GetPos().GetX() + GetRect().w / 2 - cos(velocity.GetAngle()) * GetRect().h / 2
-		, GetPos().GetY() + GetRect().h / 2 - sin(velocity.GetAngle()) * GetRect().h / 2));
+		, GetPos().GetY() + GetRect().h / 2 - sin(velocity.GetAngle()) * GetRect().h / 2 ));
 
 	projectile.SetActive(true);
 	projectile.SetReady(false);
-
-	projectile.SetProjectileAngle(velocity.GetAngle());
+	
+	projectile.SetProjectileAngle(atan2(playerInfo.GetPos().GetY() + playerInfo.GetRect().h / 2 - GetPos().GetY() + GetRect().h / 2, playerInfo.GetPos().GetX() + playerInfo.GetRect().w / 2 - GetPos().GetX() + GetRect().w / 2));
 
 	projectile.SetScale(Vector(.5, .5));
 }

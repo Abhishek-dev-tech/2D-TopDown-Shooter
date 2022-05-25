@@ -7,7 +7,7 @@ ObjectSpawner::ObjectSpawner()
 	once = true;
 
 	noOfProjectiles = 20;
-	noOfEnemies = 5;
+	noOfEnemies = 1;
 
 	index = 0;
 }
@@ -24,7 +24,7 @@ void ObjectSpawner::Update(GameObject& gameObject)
 		if (index == enemies.size())
 			index = 0;
 
-		enemies[j].Update(gameObject, enemies[index]);
+		enemies[j].Update(gameObject, enemies[index], GetProjectiles());
 	}
 
 	CheckCollision();

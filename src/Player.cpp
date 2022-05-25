@@ -69,6 +69,11 @@ void Player::HandleEvents(SDL_Event event)
 		mouseButtonPressed = false;
 }
 
+void Player::TakeDamage()
+{
+
+}
+
 void Player::Renderer()
 {
 	RenderEx(accleration.GetAngle() - (90 * 3.14 / 180));

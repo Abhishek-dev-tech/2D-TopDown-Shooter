@@ -28,7 +28,7 @@ public:
 
 	void Attack();
 	void Follow();
-	void Update(GameObject& playerInfo, GameObject& enemyInfo);
+	void Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &projectile);
 	void SetInfo();
 	void SetColor();
 	void Renderer();
@@ -45,8 +45,7 @@ public:
 	bool GetInScene();
 	void SetInScene(bool value);
 
-	void CheckCollision(SDL_Rect A, SDL_Rect B,bool &isCollide);
-	void PushBackward();
+	void CheckCollision(SDL_Rect A, SDL_Rect B);
 
 	void Reset();
 
@@ -65,9 +64,6 @@ private:
 	bool ready;
 	bool once;
 	bool inScene;
-	bool collidingWithPlayer;
-	bool pushBack;
-	bool collideWithEnemy;
 
 	float maxTime, previousTime;
 
