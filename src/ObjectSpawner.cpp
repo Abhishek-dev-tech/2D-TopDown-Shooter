@@ -114,6 +114,30 @@ void ObjectSpawner::SpawnProjectile(SDL_Renderer* renderer)
 	}
 }
 
+void ObjectSpawner::SpawnDestroyedParts(SDL_Renderer* renderer)
+{
+	for (int i = 0; i < 6; i++)
+	{
+		DestroyedParts tempDestroyedParts1("res/EnemyDestoryPart1.png", Vector(-10, -10));
+		DestroyedParts tempDestroyedParts2("res/EnemyDestoryPart2.png", Vector(-10, -10));
+		DestroyedParts tempDestroyedParts3("res/EnemyDestoryPart3.png", Vector(-10, -10));
+
+		tempDestroyedParts1.SetRenderer(renderer);
+		tempDestroyedParts2.SetRenderer(renderer);
+		tempDestroyedParts3.SetRenderer(renderer);
+
+		tempDestroyedParts1.SetScale(Vector(0, 0));
+		tempDestroyedParts2.SetScale(Vector(0, 0));
+		tempDestroyedParts3.SetScale(Vector(0, 0));
+
+		enemyDestroyedParts.push_back(tempDestroyedParts1);
+		enemyDestroyedParts.push_back(tempDestroyedParts2);
+		enemyDestroyedParts.push_back(tempDestroyedParts3);
+
+
+	}
+}
+
 
 Enemy ObjectSpawner::GetEnemies()
 {

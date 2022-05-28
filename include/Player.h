@@ -17,7 +17,6 @@ public:
 	void HandleEvents(SDL_Event event);
 	void Renderer();
 	void ShootProjectiles(Projectile &projectile);
-	void TakeDamage();
 
 private:
 

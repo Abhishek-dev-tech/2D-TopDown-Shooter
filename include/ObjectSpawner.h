@@ -4,6 +4,7 @@
 #include <iostream>
 #include <vector>
 #include "Projectile.h"
+#include "DestroyedParts.h"
 
 class ObjectSpawner
 {
@@ -12,6 +13,7 @@ public:
 	ObjectSpawner();
 	void SpawnEnemy(SDL_Renderer* renderer);
 	void SpawnProjectile(SDL_Renderer* renderer);
+	void SpawnDestroyedParts(SDL_Renderer* renderer);
 	void Update(GameObject& gameObject);
 	void HandleEvents(SDL_Event event);
 	void Renderer();
@@ -33,6 +35,8 @@ private:
 	std::vector<Enemy> enemies;
 
 	std::vector<Projectile> projectiles;
+
+	std::vector<DestroyedParts> enemyDestroyedParts;
 
 	SDL_Renderer* renderer;
 

@@ -25,6 +25,7 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 
 	once = true;
 	inScene = false;
+
 }
 
 void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &projectile)
@@ -111,8 +112,10 @@ void Enemy::Follow()
 
 void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B)
 {
-	if(info.enemyType == info.follow && Collision::IsCollide(A, B))
+	if (info.enemyType == info.follow && Collision::IsCollide(A, B))
+	{
 		Reset();
+	}
 }
 
 void Enemy::Shoot(Projectile& projectile)
