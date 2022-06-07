@@ -25,6 +25,7 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 
 	once = true;
 	inScene = false;
+	active = false;
 
 }
 
@@ -35,6 +36,7 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &pr
 		if (Distance(playerInfo.GetPos(), GetPos()) >= 125 && info.enemyType == info.shooting)
 		{
 			SetPos(GetPos() + velocity);
+
 		}
 		else if(info.enemyType == info.follow)
 		{
@@ -102,12 +104,14 @@ void Enemy::Attack()
 
 void Enemy::Follow()
 {
-	velocity.SetAngle(atan2(playerInfo.GetPos().GetY() - GetPos().GetY(), playerInfo.GetPos().GetX() - GetPos().GetX()));
-
 	if (velocity.GetLength() <= info.maxVelocity)
 	{
 		velocity.AddTo(accleration);
-	}	
+		std::cout << accleration.GetLength() << "\n";
+
+	}
+
+	velocity.SetAngle(atan2(playerInfo.GetPos().GetY() - GetPos().GetY(), playerInfo.GetPos().GetX() - GetPos().GetX()));	
 }
 
 void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B)
@@ -145,7 +149,7 @@ void Enemy::SetInfo()
 	switch (info.enemyType)
 	{
 	case 0:
-		info.speed = 0.005;
+		info.speed = 0.1;
 
 		SetScale(Vector(.2, .2));
 

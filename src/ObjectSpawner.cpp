@@ -116,7 +116,7 @@ void ObjectSpawner::SpawnProjectile(SDL_Renderer* renderer)
 
 void ObjectSpawner::SpawnDestroyedParts(SDL_Renderer* renderer)
 {
-	for (int i = 0; i < 6; i++)
+	for (int i = 0; i < 9; i++)
 	{
 		DestroyedParts tempDestroyedParts1("res/EnemyDestoryPart1.png", Vector(-10, -10));
 		DestroyedParts tempDestroyedParts2("res/EnemyDestoryPart2.png", Vector(-10, -10));
@@ -133,8 +133,6 @@ void ObjectSpawner::SpawnDestroyedParts(SDL_Renderer* renderer)
 		enemyDestroyedParts.push_back(tempDestroyedParts1);
 		enemyDestroyedParts.push_back(tempDestroyedParts2);
 		enemyDestroyedParts.push_back(tempDestroyedParts3);
-
-
 	}
 }
 

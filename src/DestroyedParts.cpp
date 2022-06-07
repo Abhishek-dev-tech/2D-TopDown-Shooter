@@ -6,3 +6,8 @@ DestroyedParts::DestroyedParts(const char* texturesheet, Vector _pos)
 {
 
 }
+
+void DestroyedParts::Despawn()
+{
+	SetScale(Vector(lerp(GetScale().GetX(), 0, 1), lerp(GetScale().GetY(), 0, 1)));
+}
