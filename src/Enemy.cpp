@@ -29,7 +29,7 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 
 }
 
-void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &projectile)
+void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 {
 	if (active)
 	{
@@ -46,8 +46,6 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &pr
 		if (SDL_GetTicks() * 0.001 - previousTime >= maxTime && info.enemyType == info.shooting)
 		{
 			previousTime = SDL_GetTicks() * 0.001;
-			//Shoot(projectile);
-
 		}
 
 		Uint8 r, g, b;
@@ -60,8 +58,8 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &pr
 
 		if (once)
 		{
-			int randX = rand() % 1100;
-			int randY = rand() % 850;
+			int randX = rand() % 700;
+			int randY = rand() % 550;
 
 			SetPos(Vector(randX, randY));
 			once = false;
@@ -70,9 +68,9 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &pr
 		float scale;
 
 		if(info.enemyType == info.follow)
-			scale = lerp(GetScale().GetX(), .2, 0.1);
+			scale = lerp(GetScale().GetX(), .13, 0.1);
 		else
-			scale = lerp(GetScale().GetX(), 1, 0.1);
+			scale = lerp(GetScale().GetX(), 0.5, 0.1);
 
 		SetScale(Vector(scale, scale));
 
@@ -107,8 +105,6 @@ void Enemy::Follow()
 	if (velocity.GetLength() <= info.maxVelocity)
 	{
 		velocity.AddTo(accleration);
-		std::cout << accleration.GetLength() << "\n";
-
 	}
 
 	velocity.SetAngle(atan2(playerInfo.GetPos().GetY() - GetPos().GetY(), playerInfo.GetPos().GetX() - GetPos().GetX()));	
@@ -122,17 +118,9 @@ void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B)
 	}
 }
 
-void Enemy::Shoot(Projectile& projectile)
+void Enemy::Shoot()
 {
-	projectile.SetPos(Vector(GetPos().GetX() + GetRect().w / 2 - cos(velocity.GetAngle()) * GetRect().h / 2
-		, GetPos().GetY() + GetRect().h / 2 - sin(velocity.GetAngle()) * GetRect().h / 2 ));
 
-	projectile.SetActive(true);
-	projectile.SetReady(false);
-	
-	projectile.SetProjectileAngle(atan2(playerInfo.GetPos().GetY() + playerInfo.GetRect().h / 2 - GetPos().GetY() + GetRect().h / 2, playerInfo.GetPos().GetX() + playerInfo.GetRect().w / 2 - GetPos().GetX() + GetRect().w / 2));
-
-	projectile.SetScale(Vector(.5, .5));
 }
 
 void Enemy::Damage()

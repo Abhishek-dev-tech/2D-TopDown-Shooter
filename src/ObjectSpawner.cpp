@@ -7,7 +7,7 @@ ObjectSpawner::ObjectSpawner()
 	once = true;
 
 	noOfProjectiles = 20;
-	noOfEnemies = 1;
+	noOfEnemies = 5;
 
 	index = 0;
 }

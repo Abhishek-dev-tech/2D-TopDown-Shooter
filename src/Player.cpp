@@ -15,7 +15,7 @@ Player::Player(const char* texturesheet, Vector _pos)
 
 	maxVelocity = 2.25;
 
-	SetScale(Vector(.7, .7));
+	SetScale(Vector(.4, .4));
 }
 
 void Player::Update(ObjectSpawner& objectSpawner)
@@ -50,7 +50,7 @@ void Player::ShootProjectiles(Projectile &projectile)
 
 	projectile.SetProjectileAngle(angle);
 
-	projectile.SetScale(Vector(.5, .5));	
+	projectile.SetScale(Vector(.4125, .4125));	
 }
 
 void Player::HandleEvents(SDL_Event event)

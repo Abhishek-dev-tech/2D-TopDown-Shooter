@@ -28,13 +28,13 @@ public:
 
 	void Attack();
 	void Follow();
-	void Update(GameObject& playerInfo, GameObject& enemyInfo, Projectile &projectile);
+	void Update(GameObject& playerInfo, GameObject& enemyInfo);
 	void SetInfo();
 	void SetColor();
 	void Renderer();
 	void Damage();
 	void Animate();
-	void Shoot(Projectile& projectile);
+	void Shoot();
 
 	bool IsActive();
 	bool IsReady();
@@ -66,8 +66,5 @@ private:
 	bool inScene;
 
 	float maxTime, previousTime;
-
-
-
 
 };
