@@ -71,6 +71,8 @@ void Game::Renderer()
 	player.Renderer();
 	objectSpawner.Renderer();
 
+	
+
 	SDL_RenderPresent(renderer);
 }
 

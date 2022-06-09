@@ -47,6 +47,8 @@ public:
 
 	void CheckCollision(SDL_Rect A, SDL_Rect B);
 
+	void DrawLine();
+
 	void Reset();
 
 private:
@@ -64,6 +66,7 @@ private:
 	bool ready;
 	bool once;
 	bool inScene;
+	bool shootingEnemyStop;
 
 	float maxTime, previousTime;
 

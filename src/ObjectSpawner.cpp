@@ -24,7 +24,7 @@ void ObjectSpawner::Update(GameObject& gameObject)
 		if (index == enemies.size())
 			index = 0;
 
-		enemies[j].Update(gameObject, enemies[index], GetProjectiles());
+		enemies[j].Update(gameObject, enemies[index]);
 	}
 
 	CheckCollision();

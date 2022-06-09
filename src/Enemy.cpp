@@ -26,7 +26,7 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 	once = true;
 	inScene = false;
 	active = false;
-
+	shootingEnemyStop = false;
 }
 
 void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
@@ -36,7 +36,12 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 		if (Distance(playerInfo.GetPos(), GetPos()) >= 125 && info.enemyType == info.shooting)
 		{
 			SetPos(GetPos() + velocity);
+			shootingEnemyStop = false;
 
+		}
+		else if (Distance(playerInfo.GetPos(), GetPos()) <= 125 && info.enemyType == info.shooting)
+		{
+			shootingEnemyStop = true;
 		}
 		else if(info.enemyType == info.follow)
 		{
@@ -120,7 +125,16 @@ void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B)
 
 void Enemy::Shoot()
 {
+	if (shootingEnemyStop)
+	{
+		
+	}
+}
 
+void Enemy::DrawLine()
+{
+	SDL_SetRenderDrawColor(GetRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
+	SDL_RenderDrawLine(GetRenderer(), GetPos().GetX() + GetRect().w / 2, GetPos().GetY() + GetRect().h / 2, playerInfo.GetPos().GetX() + playerInfo.GetRect().w / 2, playerInfo.GetPos().GetY() + playerInfo.GetRect().h / 2);
 }
 
 void Enemy::Damage()
@@ -215,5 +229,8 @@ void Enemy::SetInScene(bool value)
 
 void Enemy::Renderer()
 {
+	if(shootingEnemyStop)
+		DrawLine();
+
 	RenderEx(atan2(playerInfo.GetPos().GetY() + playerInfo.GetRect().h / 2 - GetPos().GetY() + GetRect().h / 2, playerInfo.GetPos().GetX() + playerInfo.GetRect().w / 2 - GetPos().GetX() + GetRect().w / 2) + 90 * 3.14 / 180);
 }
