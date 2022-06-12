@@ -29,7 +29,7 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 	shootingEnemyStop = false;
 }
 
-void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
+void Enemy::Update(GameObject& playerInfo)
 {
 	if (active)
 	{
@@ -80,7 +80,6 @@ void Enemy::Update(GameObject& playerInfo, GameObject& enemyInfo)
 		SetScale(Vector(scale, scale));
 
 		this->playerInfo = playerInfo;
-		this->enemyInfo = enemyInfo;
 
 		Attack();
 		CheckCollision(GetRect(), playerInfo.GetRect());
@@ -123,15 +122,7 @@ void Enemy::CheckCollision(SDL_Rect A, SDL_Rect B)
 	}
 }
 
-void Enemy::Shoot()
-{
-	if (shootingEnemyStop)
-	{
-		
-	}
-}
-
-void Enemy::DrawLine()
+void Enemy::ShootLaser()
 {
 	SDL_SetRenderDrawColor(GetRenderer(), 255, 255, 255, SDL_ALPHA_OPAQUE);
 	SDL_RenderDrawLine(GetRenderer(), GetPos().GetX() + GetRect().w / 2, GetPos().GetY() + GetRect().h / 2, playerInfo.GetPos().GetX() + playerInfo.GetRect().w / 2, playerInfo.GetPos().GetY() + playerInfo.GetRect().h / 2);
@@ -230,7 +221,7 @@ void Enemy::SetInScene(bool value)
 void Enemy::Renderer()
 {
 	if(shootingEnemyStop)
-		DrawLine();
+		ShootLaser();
 
 	RenderEx(atan2(playerInfo.GetPos().GetY() + playerInfo.GetRect().h / 2 - GetPos().GetY() + GetRect().h / 2, playerInfo.GetPos().GetX() + playerInfo.GetRect().w / 2 - GetPos().GetX() + GetRect().w / 2) + 90 * 3.14 / 180);
 }

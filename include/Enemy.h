@@ -28,13 +28,12 @@ public:
 
 	void Attack();
 	void Follow();
-	void Update(GameObject& playerInfo, GameObject& enemyInfo);
+	void Update(GameObject& playerInfo);
 	void SetInfo();
 	void SetColor();
 	void Renderer();
 	void Damage();
 	void Animate();
-	void Shoot();
 
 	bool IsActive();
 	bool IsReady();
@@ -47,7 +46,7 @@ public:
 
 	void CheckCollision(SDL_Rect A, SDL_Rect B);
 
-	void DrawLine();
+	void ShootLaser();
 
 	void Reset();
 
@@ -58,7 +57,6 @@ private:
 	Vector accleration;
 	
 	GameObject playerInfo;
-	GameObject enemyInfo;
 
 	int hitPoints;
 
