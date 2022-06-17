@@ -28,6 +28,7 @@ public:
 	void CheckCollision();
 	void CheckEnemiesInScene();
 
+	DestroyedParts GetSpawnDestroyedParts();
 	Enemy GetEnemiesInScene();
 
 private:

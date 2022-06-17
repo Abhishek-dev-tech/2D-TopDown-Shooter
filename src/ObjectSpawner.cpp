@@ -128,6 +128,15 @@ void ObjectSpawner::SpawnDestroyedParts(SDL_Renderer* renderer)
 	}
 }
 
+DestroyedParts ObjectSpawner::GetSpawnDestroyedParts()
+{
+	for (int i = 0; i < enemyDestroyedParts.size(); i++)
+	{
+		if(!enemyDestroyedParts[i].IsActive())
+			return enemyDestroyedParts[i];
+	}
+}
+
 
 Enemy ObjectSpawner::GetEnemies()
 {

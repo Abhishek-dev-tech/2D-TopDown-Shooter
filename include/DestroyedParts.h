@@ -8,6 +8,12 @@ public:
 	DestroyedParts(const char* texturesheet, Vector _pos);
 	void Despawn();
 
+	bool IsActive()
+	{
+		return IsActive;
+	}
+
 private:
+	bool isActive;
 
 };
