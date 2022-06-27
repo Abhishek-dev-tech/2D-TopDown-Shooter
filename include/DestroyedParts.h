@@ -10,8 +10,9 @@ public:
 
 	bool IsActive()
 	{
-		return IsActive;
+		return isActive;
 	}
+	void Renderer();
 
 private:
 	bool isActive;

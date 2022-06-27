@@ -3,7 +3,6 @@
 #include "Collision.h"
 #include "Projectile.h"
 
-
 struct Info
 {
 public:
@@ -28,7 +27,7 @@ public:
 
 	void Attack();
 	void Follow();
-	void Update(GameObject& playerInfo);
+	void Update(GameObject& playerInfo, GameObject& destroyedParts);
 	void SetInfo();
 	void SetColor();
 	void Renderer();
@@ -57,6 +56,7 @@ private:
 	Vector accleration;
 	
 	GameObject playerInfo;
+	GameObject destroyedParts;
 
 	int hitPoints;
 

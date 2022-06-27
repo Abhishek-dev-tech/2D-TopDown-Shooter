@@ -16,7 +16,7 @@ void ObjectSpawner::Update(GameObject& gameObject)
 		projectiles[i].Update();
 
 	for (int j = 0; j < enemies.size(); j++)
-		enemies[j].Update(gameObject);
+		enemies[j].Update(gameObject, GetSpawnDestroyedParts());
 	
 
 	CheckCollision();
@@ -128,11 +128,11 @@ void ObjectSpawner::SpawnDestroyedParts(SDL_Renderer* renderer)
 	}
 }
 
-DestroyedParts ObjectSpawner::GetSpawnDestroyedParts()
+DestroyedParts& ObjectSpawner::GetSpawnDestroyedParts()
 {
 	for (int i = 0; i < enemyDestroyedParts.size(); i++)
 	{
-		if(!enemyDestroyedParts[i].IsActive())
+		if (!enemyDestroyedParts[i].IsActive())
 			return enemyDestroyedParts[i];
 	}
 }
@@ -201,4 +201,9 @@ void ObjectSpawner::Renderer()
 
 	for (int i = 0; i < projectiles.size(); i++)
 		projectiles[i].Renderer();
+
+	for (int i = 0; i < enemyDestroyedParts.size(); i++)
+		enemyDestroyedParts[i].Renderer();
+
+	
 }

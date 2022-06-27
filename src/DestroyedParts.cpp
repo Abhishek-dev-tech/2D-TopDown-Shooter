@@ -10,5 +10,11 @@ DestroyedParts::DestroyedParts(const char* texturesheet, Vector _pos)
 void DestroyedParts::Despawn()
 {
 	SetScale(Vector(lerp(GetScale().GetX(), 0, .5), lerp(GetScale().GetY(), 0, 1)));
+	SetPos(Vector(-10, -10));
 	isActive = false;
+}
+
+void DestroyedParts::Renderer()
+{
+	RenderEx(0);
 }

@@ -36,6 +36,7 @@ void Game::Init(const char* title, int xpos, int ypos, int width, int height, bo
 
 	objectSpawner.SpawnProjectile(renderer);
 	objectSpawner.SpawnEnemy(renderer);
+	objectSpawner.SpawnDestroyedParts(renderer);
 	
 }
 
