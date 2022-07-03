@@ -28,7 +28,7 @@ public:
 	void CheckCollision();
 	void CheckEnemiesInScene();
 
-	DestroyedParts& GetSpawnDestroyedParts();
+	DestroyedParts GetSpawnDestroyedParts();
 	Enemy GetEnemiesInScene();
 
 private:

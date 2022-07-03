@@ -29,7 +29,7 @@ Enemy::Enemy(const char* texturesheet, Vector _pos, int enemyType)
 	shootingEnemyStop = false;
 }
 
-void Enemy::Update(GameObject& playerInfo, GameObject& destroyedParts)
+void Enemy::Update(GameObject& playerInfo)
 {
 	if (active)
 	{
@@ -80,7 +80,6 @@ void Enemy::Update(GameObject& playerInfo, GameObject& destroyedParts)
 		SetScale(Vector(scale, scale));
 
 		this->playerInfo = playerInfo;
-		this->destroyedParts = destroyedParts;
 
 		Attack();
 		CheckCollision(GetRect(), playerInfo.GetRect());
@@ -179,9 +178,6 @@ void Enemy::Animate()
 
 void Enemy::Reset()
 {
-	destroyedParts.SetScale(Vector(0.2, 0.2));
-	destroyedParts.SetPos(Vector(GetPos().GetX(), GetPos().GetY()));
-
 	active = false;
 	once = true;
 	hitPoints = info.hitPoints;

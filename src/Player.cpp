@@ -20,7 +20,13 @@ Player::Player(const char* texturesheet, Vector _pos)
 
 void Player::Update(ObjectSpawner& objectSpawner)
 {
+
 	SetPos(GetPos() + velocity);
+
+	if (GetPos().GetX() + GetRect().w > 800 || GetPos().GetX() < 0 || GetPos().GetY() + GetRect().h > 600 || GetPos().GetY() < 0)
+	{
+		velocity.SetLength(0);
+	}
 
 	if (velocity.GetLength() >= maxVelocity)
 		velocity.SetLength(maxVelocity);
@@ -31,7 +37,8 @@ void Player::Update(ObjectSpawner& objectSpawner)
 
 	angle = atan2(dy, dx);
 
-	accleration.SetAngle(angle);	
+	accleration.SetAngle(angle);
+	
 
 	if (SDL_GetTicks() * 0.001 - previousTime >= maxTime && mouseButtonPressed)
 	{

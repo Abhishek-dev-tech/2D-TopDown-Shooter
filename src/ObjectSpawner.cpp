@@ -16,7 +16,7 @@ void ObjectSpawner::Update(GameObject& gameObject)
 		projectiles[i].Update();
 
 	for (int j = 0; j < enemies.size(); j++)
-		enemies[j].Update(gameObject, GetSpawnDestroyedParts());
+		enemies[j].Update(gameObject);
 	
 
 	CheckCollision();
@@ -128,7 +128,7 @@ void ObjectSpawner::SpawnDestroyedParts(SDL_Renderer* renderer)
 	}
 }
 
-DestroyedParts& ObjectSpawner::GetSpawnDestroyedParts()
+DestroyedParts ObjectSpawner::GetSpawnDestroyedParts()
 {
 	for (int i = 0; i < enemyDestroyedParts.size(); i++)
 	{

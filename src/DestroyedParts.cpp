@@ -1,4 +1,5 @@
 #include "GameObject.h"
+#include <iostream>
 #include "DestroyedParts.h"
 
 DestroyedParts::DestroyedParts(const char* texturesheet, Vector _pos)
